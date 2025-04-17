@@ -24,13 +24,23 @@ public class CourseServiceImp implements CourseService {
     }
 
     @Override
-    public List<Course> paginationCourse(int currentPage) {
-        return courseDao.paginationCourse(currentPage);
+    public List<Course> paginationCourse(int currentPage, int itemPerPage) {
+        return courseDao.paginationCourse(currentPage, itemPerPage);
     }
 
     @Override
     public Course findCourseById(String courseId) {
         return courseDao.findCourseById(courseId);
+    }
+
+    @Override
+    public List<Course> searchCourseByName(String courseName) {
+        return courseDao.searchCourseByName(courseName);
+    }
+
+    @Override
+    public List<Course> sortCourse(int option) {
+        return courseDao.sortCourse(option);
     }
 
     @Override
@@ -50,6 +60,6 @@ public class CourseServiceImp implements CourseService {
 
     @Override
     public boolean delete(Course course) {
-        return false;
+        return courseDao.delete(course);
     }
 }

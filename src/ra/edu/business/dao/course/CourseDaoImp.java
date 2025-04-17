@@ -40,7 +40,7 @@ public class CourseDaoImp implements CourseDao {
 
         try {
             conn = ConnectionDB.openConnection();
-            callSt = conn.prepareCall("call is_exist_course_name(?)");
+            callSt = conn.prepareCall("call is_exist_name(?)");
             callSt.setString(1, courseName);
 
             ResultSet rs = callSt.executeQuery();
@@ -59,15 +59,16 @@ public class CourseDaoImp implements CourseDao {
     }
 
     @Override
-    public List<Course> paginationCourse(int currentPage) {
+    public List<Course> paginationCourse(int currentPage, int itemPerPage) {
         Connection conn = null;
         CallableStatement callSt = null;
         List<Course> courses = null;
 
         try {
             conn = ConnectionDB.openConnection();
-            callSt = conn.prepareCall("call pagination_courses(?)");
+            callSt = conn.prepareCall("call pagination_courses(?,?)");
             callSt.setInt(1, currentPage);
+            callSt.setInt(2, itemPerPage);
 
             ResultSet rs = callSt.executeQuery();
             courses = new ArrayList<>();
@@ -157,6 +158,72 @@ public class CourseDaoImp implements CourseDao {
     }
 
     @Override
+    public List<Course> searchCourseByName(String courseName) {
+        Connection conn = null;
+        CallableStatement callSt = null;
+        List<Course> courses = null;
+
+        try {
+            conn = ConnectionDB.openConnection();
+            callSt = conn.prepareCall("call search_course(?)");
+            callSt.setString(1, courseName);
+
+            ResultSet rs = callSt.executeQuery();
+            courses = new ArrayList<>();
+
+            while (rs.next()) {
+                Course course = new Course();
+                course.setCourseId(rs.getString("course_id"));
+                course.setCourseName(rs.getString("name"));
+                course.setDuration(rs.getInt("duration"));
+                course.setInstructor(rs.getString("instructor"));
+                course.setCreatedAt(rs.getDate("created_at").toLocalDate());
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            System.err.println("Có lỗi xử lý SQL " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        } finally {
+            ConnectionDB.closeConnection(conn, callSt);
+        }
+        return courses;
+    }
+
+    @Override
+    public List<Course> sortCourse(int option) {
+        Connection conn = null;
+        CallableStatement callSt = null;
+        List<Course> courses = null;
+
+        try {
+            conn = ConnectionDB.openConnection();
+            callSt = conn.prepareCall("call sort_course(?)");
+            callSt.setInt(1, option);
+
+            ResultSet rs = callSt.executeQuery();
+            courses = new ArrayList<>();
+
+            while (rs.next()) {
+                Course course = new Course();
+                course.setCourseId(rs.getString("course_id"));
+                course.setCourseName(rs.getString("name"));
+                course.setDuration(rs.getInt("duration"));
+                course.setInstructor(rs.getString("instructor"));
+                course.setCreatedAt(rs.getDate("created_at").toLocalDate());
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            System.err.println("Có lỗi xử lý SQL " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        } finally {
+            ConnectionDB.closeConnection(conn, callSt);
+        }
+        return courses;
+    }
+
+    @Override
     public boolean add(Course course) {
         Connection conn = null;
         CallableStatement callSt = null;
@@ -220,6 +287,24 @@ public class CourseDaoImp implements CourseDao {
 
     @Override
     public boolean delete(Course course) {
+        Connection conn = null;
+        CallableStatement callSt = null;
+
+        try {
+            conn = ConnectionDB.openConnection();
+            callSt = conn.prepareCall("call delete_course(?)");
+
+            callSt.setString(1, course.getCourseId());
+
+            callSt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Có lỗi xử lý SQL " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        } finally {
+            ConnectionDB.closeConnection(conn, callSt);
+        }
         return false;
     }
 }

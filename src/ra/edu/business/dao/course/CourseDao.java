@@ -10,9 +10,13 @@ public interface CourseDao extends AppDao<Course> {
 
     boolean checkExistCourseName(String courseName);
 
-    List<Course> paginationCourse(int currentPage);
+    List<Course> paginationCourse(int currentPage, int itemPerPage);
 
     List<Course> findAll();
 
     Course findCourseById(String courseId);
+
+    List<Course> searchCourseByName(String courseName);
+
+    List<Course> sortCourse(int option);
 }

@@ -16,9 +16,14 @@ public class ExistValidator {
 
             switch (type) {
                 case "courseId":
-                    Course course = new Course();
-                    course.setCourseId(inputValue);
-                    isExist = CourseUI.courseService.checkExistCourseId(course.getCourseId());
+                    Course course1 = new Course();
+                    course1.setCourseId(inputValue);
+                    isExist = CourseUI.courseService.checkExistCourseId(course1.getCourseId());
+                    break;
+                case "courseName":
+                    Course course2 = new Course();
+                    course2.setCourseName(inputValue);
+                    isExist = CourseUI.courseService.checkExistCourseName(course2.getCourseName());
                     break;
                 case "studentId":
                     break;

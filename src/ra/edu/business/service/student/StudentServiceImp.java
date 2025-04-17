@@ -14,11 +14,6 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public boolean checkLoginUser(String email, String password) {
-        return studentDao.checkLoginUser(email, password);
-    }
-
-    @Override
     public List<Student> findAll() {
         return List.of();
     }

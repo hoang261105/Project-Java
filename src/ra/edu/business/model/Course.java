@@ -87,7 +87,7 @@ public class Course implements IApp {
 
     @Override
     public void displayData() {
-        System.out.printf("| %-10s | %-20s | %-8d | %-15s | %-10s |\n",
+        System.out.printf("| %-10s | %-30s | %-10d | %-15s | %-10s |\n",
                 courseId, courseName, duration, instructor, createdAt);
     }
 }

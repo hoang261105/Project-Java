@@ -1,5 +1,7 @@
 package ra.edu.presentation;
 
+import ra.edu.validate.Validator;
+
 import java.util.Scanner;
 
 public class AdminUI {
@@ -14,9 +16,8 @@ public class AdminUI {
             System.out.println("|  4. Thống kê học viên theo từng khóa học                  |");
             System.out.println("|  5. Đăng xuất                                             |");
             System.out.println("+===========================================================+");
-            System.out.printf("Lựa chọn của bạn: ");
 
-            int choice = Integer.parseInt(sc.nextLine());
+            int choice = Validator.validateInputInt(sc, "Lựa chọn của bạn:");
 
             switch (choice) {
                 case 1:
