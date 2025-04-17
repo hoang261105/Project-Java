@@ -28,10 +28,12 @@ public class Paginate {
                 continue;
             }
 
-            courseList = CourseUI.courseService.paginationCourse(curPage, ITEMS_PER_PAGE);
+            int fromIndex = (curPage - 1) * ITEMS_PER_PAGE;
+            int toIndex = Math.min(fromIndex + ITEMS_PER_PAGE, courseList.size());
+            List<Course> paginatedList = courseList.subList(fromIndex, toIndex);
 
             TableUtils.printHeaderTableCourse();
-            courseList.forEach(course -> {
+            paginatedList.forEach(course -> {
                 course.displayData();
                 System.out.println("+------------+--------------------------------+------------+-----------------+------------+");
             });
