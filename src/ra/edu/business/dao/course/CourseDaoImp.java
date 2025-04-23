@@ -34,14 +34,20 @@ public class CourseDaoImp implements CourseDao {
     }
 
     @Override
-    public boolean checkExistCourseName(String courseName) {
+    public boolean checkExistCourseName(String courseName, String excludeId) {
         Connection conn = null;
         CallableStatement callSt = null;
 
         try {
             conn = ConnectionDB.openConnection();
-            callSt = conn.prepareCall("call is_exist_name(?)");
+            callSt = conn.prepareCall("call is_exist_name(?,?)");
             callSt.setString(1, courseName);
+
+            if (excludeId == null || excludeId.isEmpty()) {
+                callSt.setNull(2, Types.VARCHAR);
+            } else {
+                callSt.setString(2, excludeId);
+            }
 
             ResultSet rs = callSt.executeQuery();
 
@@ -95,35 +101,7 @@ public class CourseDaoImp implements CourseDao {
 
     @Override
     public List<Course> findAll() {
-        Connection conn = null;
-        CallableStatement callSt = null;
-        List<Course> courses = null;
-
-        try {
-            conn = ConnectionDB.openConnection();
-            callSt = conn.prepareCall("call get_all_courses()");
-
-            ResultSet rs = callSt.executeQuery();
-            courses = new ArrayList<>();
-
-            while (rs.next()) {
-                Course course = new Course();
-                course.setCourseId(rs.getString("course_id"));
-                course.setCourseName(rs.getString("name"));
-                course.setDuration(rs.getInt("duration"));
-                course.setInstructor(rs.getString("instructor"));
-                course.setCreatedAt(rs.getDate("created_at").toLocalDate());
-                courses.add(course);
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Có lỗi xử lý SQL " + e.getMessage());
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-            ConnectionDB.closeConnection(conn, callSt);
-        }
-        return courses;
+        return List.of();
     }
 
     @Override
@@ -213,6 +191,44 @@ public class CourseDaoImp implements CourseDao {
                 course.setCreatedAt(rs.getDate("created_at").toLocalDate());
                 courses.add(course);
             }
+        } catch (SQLException e) {
+            System.err.println("Có lỗi xử lý SQL " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        } finally {
+            ConnectionDB.closeConnection(conn, callSt);
+        }
+        return courses;
+    }
+
+    @Override
+    public List<Course> findAllOfRole(String role) {
+        Connection conn = null;
+        CallableStatement callSt = null;
+        List<Course> courses = null;
+
+        try {
+            conn = ConnectionDB.openConnection();
+            callSt = conn.prepareCall("call get_all_courses(?)");
+
+            callSt.setString(1, role);
+
+            ResultSet rs = callSt.executeQuery();
+            courses = new ArrayList<>();
+
+            while (rs.next()) {
+                Course course = new Course();
+
+                if (role.equalsIgnoreCase("admin")){
+                    course.setCourseId(rs.getString("course_id"));
+                }
+                course.setCourseName(rs.getString("name"));
+                course.setDuration(rs.getInt("duration"));
+                course.setInstructor(rs.getString("instructor"));
+                course.setCreatedAt(rs.getDate("created_at").toLocalDate());
+                courses.add(course);
+            }
+
         } catch (SQLException e) {
             System.err.println("Có lỗi xử lý SQL " + e.getMessage());
         } catch (Exception e) {

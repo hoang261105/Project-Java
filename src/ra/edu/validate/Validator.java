@@ -14,8 +14,12 @@ public class Validator {
                 String input = sc.nextLine();
 
                 if (input.isEmpty()) {
-                    System.err.println("Dữ liệu không được để trống!");
-                    continue;
+                    if(stringRule.isAllowEmpty()){
+                        return "";
+                    }else{
+                        System.err.println("Dữ liệu không được để trống!");
+                        continue;
+                    }
                 }
 
                 if(stringRule.isValid(input)) {
@@ -36,7 +40,7 @@ public class Validator {
             try {
                 int input = Integer.parseInt(sc.nextLine());
 
-                if(input > 0){
+                if(input >= 0){
                     return input;
                 }
 

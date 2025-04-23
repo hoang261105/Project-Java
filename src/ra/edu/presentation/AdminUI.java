@@ -6,16 +6,18 @@ import java.util.Scanner;
 
 public class AdminUI {
     public static void printMenuAdmin(Scanner sc) {
+        String RESET = "\u001B[0m";
+        String ORANGE = "\u001B[38;5;208m";
         do {
-            System.out.println("+===========================================================+");
-            System.out.println("|                    MENU QUẢN TRỊ VIÊN                     |");
-            System.out.println("+===========================================================+");
-            System.out.println("|  1. Quản lí khóa học                                      |");
-            System.out.println("|  2. Quản lí học viên                                      |");
-            System.out.println("|  3. Quản lí đăng kí khóa học                              |");
-            System.out.println("|  4. Thống kê học viên theo từng khóa học                  |");
-            System.out.println("|  5. Đăng xuất                                             |");
-            System.out.println("+===========================================================+");
+            System.out.println(ORANGE + "╔═════════════════════════════════════════════════════════════════╗");
+            System.out.println("║                   ==== MENU QUẢN TRỊ VIÊN ====                  ║");
+            System.out.println("╠═════════════════════════════════════════════════════════════════╣");
+            System.out.println("║  1. Quản lí khóa học                                            ║");
+            System.out.println("║  2. Quản lí học viên                                            ║");
+            System.out.println("║  3. Quản lí đăng kí khóa học                                    ║");
+            System.out.println("║  4. Thống kê học viên theo từng khóa học                        ║");
+            System.out.println("║  5. Đăng xuất                                                   ║");
+            System.out.println("╚═════════════════════════════════════════════════════════════════╝" + RESET);
 
             int choice = Validator.validateInputInt(sc, "Lựa chọn của bạn:");
 
@@ -41,6 +43,7 @@ public class AdminUI {
                     } else if (confirm.equals("n")) {
                         System.out.println("Hủy đăng xuất");
                     }
+                    break;
                 default:
                     System.err.println("Vui lòng chọn lại từ 1 - 5!");
             }

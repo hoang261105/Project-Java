@@ -1,14 +1,11 @@
-package ra.edu.business.dao.admin;
+package ra.edu.business.dao.account;
 
 import ra.edu.business.config.ConnectionDB;
 import ra.edu.business.model.AccStatus;
 import ra.edu.business.model.Account;
 import ra.edu.business.model.Role;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AccountDaoImp implements AccountDao {
     @Override
@@ -28,7 +25,7 @@ public class AccountDaoImp implements AccountDao {
 
             if (rs.next()) {
                 account = new Account();
-                account.setId(rs.getInt("id"));
+                account.setId(rs.getString("id"));
                 account.setEmail(rs.getString("email"));
                 account.setPassword(rs.getString("password"));
                 account.setRole(Role.valueOf(rs.getString("role")));

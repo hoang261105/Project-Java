@@ -1,13 +1,14 @@
 package ra.edu.business.model;
 
 import ra.edu.business.IApp;
+import ra.edu.validate.RegexRule;
 import ra.edu.validate.StringRule;
 import ra.edu.validate.Validator;
 
 import java.util.Scanner;
 
 public class Account implements IApp {
-    private int id;
+    private String id;
     private String email;
     private String password;
     private Role role;
@@ -16,7 +17,7 @@ public class Account implements IApp {
     public Account() {
     }
 
-    public Account(int id, String email, String password, Role role, AccStatus status) {
+    public Account(String id, String email, String password, Role role, AccStatus status) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -24,11 +25,11 @@ public class Account implements IApp {
         this.status = status;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -66,12 +67,11 @@ public class Account implements IApp {
 
     @Override
     public void inputData(Scanner sc) {
-        this.email = Validator.validateInputString(sc, "Nhập email", new StringRule(0, 100, "Email không hợp lệ"));
+        this.email = Validator.validateInputRegex(sc, "Nhập email: ", new RegexRule("^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,6}$", "Email không hợp lệ"));
 
-        this.password = Validator.validateInputString(sc, "Nhập mật khẩu: ", new StringRule(0, 255, "Mật khẩu không hợp lệ"));
+        this.password = Validator.validateInputString(sc, "Nhập mật khẩu: ", new StringRule(0, 255, false, "Mật khẩu không hợp lệ"));
     }
 
-    @Override
     public void displayData() {
 
     }

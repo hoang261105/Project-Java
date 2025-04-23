@@ -1,4 +1,4 @@
-package ra.edu.business.dao.admin;
+package ra.edu.business.dao.account;
 
 import ra.edu.business.model.Account;
 

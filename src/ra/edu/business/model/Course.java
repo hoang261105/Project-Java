@@ -72,7 +72,7 @@ public class Course implements IApp {
 
         this.duration = Validator.validateInputInt(sc, "Nhập thời lượng:");
 
-        this.instructor = Validator.validateInputString(sc, "Nhập tên giảng viên: ", new StringRule(0, 100, "Tên giảng viên không hợp lệ"));
+        this.instructor = Validator.validateInputString(sc, "Nhập tên giảng viên: ", new StringRule(0, 100, false, "Tên giảng viên không hợp lệ"));
     }
 
     public String inputCourseId(Scanner sc){
@@ -81,13 +81,20 @@ public class Course implements IApp {
     }
 
     public String inputCourseName(Scanner sc){
-        String courseName = Validator.validateInputString(sc, "Nhập tên khóa học: ", new StringRule(0, 100, "Tên khóa học không hợp lệ"));
+        String courseName = Validator.validateInputString(sc, "Nhập tên khóa học: ", new StringRule(0, 100, false, "Tên khóa học không hợp lệ"));
         return ExistValidator.validateExist(sc, courseName, new ExistRule("courseName", "Tên khóa học đã tồn tại"));
     }
 
-    @Override
-    public void displayData() {
-        System.out.printf("| %-10s | %-30s | %-10d | %-15s | %-10s |\n",
-                courseId, courseName, duration, instructor, createdAt);
+    public void displayData(String role) {
+        String purpleTextColor = "\u001B[38;5;93m";  // Mã màu ANSI cho màu chữ purple
+        String reset = "\u001B[0m"; // Mã reset màu
+
+        if ("admin".equalsIgnoreCase(role)) {
+            System.out.printf(purpleTextColor + "| %-10s | %-30s | %-10d | %-15s | %-10s |" + reset + "\n",
+                    courseId, courseName, duration, instructor, createdAt);
+        } else if ("student".equalsIgnoreCase(role)){
+            System.out.printf(purpleTextColor + "| %-30s | %-10d | %-15s | %-10s |" + reset + "\n",
+                    courseName, duration, instructor, createdAt);
+        }
     }
 }

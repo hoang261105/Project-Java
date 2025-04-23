@@ -1,7 +1,7 @@
-package ra.edu.business.service.admin;
+package ra.edu.business.service.account;
 
-import ra.edu.business.dao.admin.AccountDao;
-import ra.edu.business.dao.admin.AccountDaoImp;
+import ra.edu.business.dao.account.AccountDao;
+import ra.edu.business.dao.account.AccountDaoImp;
 import ra.edu.business.model.Account;
 
 import java.util.List;

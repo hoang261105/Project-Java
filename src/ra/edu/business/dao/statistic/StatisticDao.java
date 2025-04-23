@@ -1,10 +1,8 @@
-package ra.edu.business.service.statistic;
-
-import ra.edu.business.service.AppService;
+package ra.edu.business.dao.statistic;
 
 import java.util.Map;
 
-public interface StatisticService {
+public interface StatisticDao {
     Map<Integer, Integer> getTotalCourseAndStudent();
 
     Map<String, Integer> getTotalStudentOfCourse();

@@ -1,10 +1,9 @@
 package ra.edu.presentation;
 
-import ra.edu.business.model.Course;
+import ra.edu.business.model.*;
 import ra.edu.business.service.course.CourseService;
 import ra.edu.business.service.course.CourseServiceImp;
 import ra.edu.utils.Paginate;
-import ra.edu.utils.TableUtils;
 import ra.edu.validate.ExistRule;
 import ra.edu.validate.ExistValidator;
 import ra.edu.validate.StringRule;
@@ -18,24 +17,26 @@ public class CourseUI {
 
     public static void printMenuCourse(Scanner sc) {
         CourseUI courseUI = new CourseUI();
+        String RESET = "\u001B[0m";
+        String LIME_GREEN = "\u001B[38;5;10m";
         do {
-            System.out.println("+===========================================================+");
-            System.out.println("|                  QUẢN LÍ KHÓA HỌC                         |");
-            System.out.println("+===========================================================+");
-            System.out.println("|  1. Hiển thị danh sách khóa học có phân trang             |");
-            System.out.println("|  2. Thêm mới khóa học                                     |");
-            System.out.println("|  3. Cập nhật khóa học                                     |");
-            System.out.println("|  4. Xóa khóa học                                          |");
-            System.out.println("|  5. Tìm kiếm khóa học                                     |");
-            System.out.println("|  6. Sắp xếp khóa học                                      |");
-            System.out.println("|  7. Quay về menu chính                                    |");
-            System.out.println("+===========================================================+");
+            System.out.println(LIME_GREEN + "╔═══════════════════════════════════════════════════════════╗");
+            System.out.println("║                 ==== QUẢN LÍ KHÓA HỌC ====                ║");
+            System.out.println("╠═══════════════════════════════════════════════════════════╣");
+            System.out.println("║  1. Hiển thị danh sách khóa học có phân trang             ║");
+            System.out.println("║  2. Thêm mới khóa học                                     ║");
+            System.out.println("║  3. Cập nhật khóa học                                     ║");
+            System.out.println("║  4. Xóa khóa học                                          ║");
+            System.out.println("║  5. Tìm kiếm khóa học                                     ║");
+            System.out.println("║  6. Sắp xếp khóa học                                      ║");
+            System.out.println("║  7. Quay về menu chính                                    ║");
+            System.out.println("╚═══════════════════════════════════════════════════════════╝" + RESET);
 
             int choice = Validator.validateInputInt(sc, "Lựa chọn của bạn:");
 
             switch (choice) {
                 case 1:
-                    Paginate.paginateCourse(sc, courseService.findAll());
+                    Paginate.paginateCourse(sc, courseService.findAllOfRole("admin"), "admin");
                     break;
                 case 2:
                     courseUI.addCourse(sc);
@@ -84,26 +85,37 @@ public class CourseUI {
         Course course = courseService.findCourseById(courseId);
 
         if (course != null) {
+            String RESET = "\u001B[0m";
+            String ORANGE_RED = "\u001B[38;5;202m";
             do {
-                System.out.println("==================CẬP NHẬT THÔNG TIN================");
-                System.out.println("1. Cập nhật tên khóa học");
-                System.out.println("2. Cập nhật thời lượng");
-                System.out.println("3. Cập nhật giảng viên");
-                System.out.println("4. Trở về menu quản lí");
+                System.out.println(ORANGE_RED + "╔═══════════════════════════════════════════════════╗");
+                System.out.println("║             CẬP NHẬT THÔNG TIN KHÓA HỌC           ║");
+                System.out.println("╠═══════════════════════════════════════════════════╣");
+                System.out.println("║ 1. Cập nhật tên khóa học                          ║");
+                System.out.println("║ 2. Cập nhật thời lượng                            ║");
+                System.out.println("║ 3. Cập nhật giảng viên                            ║");
+                System.out.println("║ 4. Trở về menu quản lí                            ║");
+                System.out.println("╚═══════════════════════════════════════════════════╝" + RESET);
 
                 int choice = Validator.validateInputInt(sc, "Lựa chọn của bạn:");
 
                 switch (choice) {
                     case 1:
-                        String courseName = Validator.validateInputString(sc, "Nhập tên khóa học: ", new StringRule(0, 100, "Tên khóa học không hợp lệ"));
-                        course.setCourseName(ExistValidator.validateExist(sc, courseName, new ExistRule("courseName", "Tên khóa học đã tồn tại")));
-                        boolean result1 = courseService.update(course, 1);
+                        String newName = Validator.validateInputString(
+                                sc,
+                                "Nhập tên khóa học mới: ",
+                                new StringRule(0, 100, true, "Tên khóa học không hợp lệ")
+                        );
 
-                        if (result1) {
+                        course.setCourseName(ExistValidator.validateExist(sc, newName, new ExcludeId("courseName", "Tên khóa học đã tồn tại", course.getCourseId())));
+
+                        boolean result = courseService.update(course, 1);
+                        if (result) {
                             System.out.println("Cập nhật tên khóa học thành công!");
                         } else {
                             System.err.println("Cập nhật tên khóa học thất bại");
                         }
+
                         break;
                     case 2:
                         int newDuration = Validator.validateInputInt(sc, "Nhập thời lượng mới:");
@@ -118,7 +130,7 @@ public class CourseUI {
                         }
                         break;
                     case 3:
-                        String newInstructor = Validator.validateInputString(sc, "Nhập tên giảng viên: ", new StringRule(0, 100, "Tên giảng viên không hợp lệ"));
+                        String newInstructor = Validator.validateInputString(sc, "Nhập tên giảng viên: ", new StringRule(0, 100, false, "Tên giảng viên không hợp lệ"));
                         course.setInstructor(newInstructor);
 
                         boolean result3 = courseService.update(course, 3);
@@ -145,6 +157,17 @@ public class CourseUI {
         String courseId = sc.nextLine();
 
         if (courseService.findCourseById(courseId) != null) {
+            List<CourseRegistrationInfo> courseRegistrationInfoList = EnrollmentUI.enrollmentService.findCourseRegistrationByStudent(courseId);
+
+            List<CourseRegistrationInfo> filterStudentByCourse = courseRegistrationInfoList.stream()
+                    .filter(courseRegistrationInfo -> courseRegistrationInfo.getStatus().equals(Status.CONFIRMED))
+                    .toList();
+
+            if (!filterStudentByCourse.isEmpty()) {
+                System.err.println("Khóa học có sinh viên học, không thể xoá!");
+                return;
+            }
+
             System.out.println("Bạn có chắc chắn muốn xóa không?");
             String confirm = sc.nextLine();
 
@@ -177,7 +200,7 @@ public class CourseUI {
             return;
         }
 
-        Paginate.paginateCourse(sc, filterCourse);
+        Paginate.paginateCourse(sc, filterCourse, "admin");
     }
 
     public void sortCourse(Scanner sc) {
@@ -212,31 +235,31 @@ public class CourseUI {
 
             int choice = Validator.validateInputInt(sc, "Lựa chọn của bạn:");
 
-            switch (choice){
+            switch (choice) {
                 case 1:
-                    switch (attribute){
+                    switch (attribute) {
                         case "courseName":
                             List<Course> sortCourseName = courseService.sortCourse(3);
-                            Paginate.paginateCourse(sc, sortCourseName);
+                            Paginate.paginateCourse(sc, sortCourseName, "admin");
                             System.out.println("Sắp xếp theo tên tăng dần thành công");
                             break;
                         case "courseId":
                             List<Course> sortCourseId = courseService.sortCourse(1);
-                            Paginate.paginateCourse(sc, sortCourseId);
+                            Paginate.paginateCourse(sc, sortCourseId, "admin");
                             System.out.println("Sắp xếp theo mã khóa học tăng dần thành công");
                             break;
                     }
                     break;
                 case 2:
-                    switch (attribute){
+                    switch (attribute) {
                         case "courseName":
                             List<Course> sortCourseNameDesc = courseService.sortCourse(4);
-                            Paginate.paginateCourse(sc, sortCourseNameDesc);
+                            Paginate.paginateCourse(sc, sortCourseNameDesc, "admin");
                             System.out.println("Sắp xếp theo tên giảm dân thành công");
                             break;
                         case "courseId":
                             List<Course> sortCourseIdDesc = courseService.sortCourse(2);
-                            Paginate.paginateCourse(sc, sortCourseIdDesc);
+                            Paginate.paginateCourse(sc, sortCourseIdDesc, "admin");
                             System.out.println("Sắp xếp theo mã khóa học giảm dần thành công");
                             break;
                     }
@@ -246,6 +269,6 @@ public class CourseUI {
                 default:
                     System.err.println("Vui lòng chọn lại từ 1- 3!");
             }
-        }while (true);
+        } while (true);
     }
 }

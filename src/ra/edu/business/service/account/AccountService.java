@@ -1,4 +1,4 @@
-package ra.edu.business.service.admin;
+package ra.edu.business.service.account;
 
 import ra.edu.business.model.Account;
 import ra.edu.business.service.AppService;

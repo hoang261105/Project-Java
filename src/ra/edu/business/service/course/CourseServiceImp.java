@@ -19,8 +19,8 @@ public class CourseServiceImp implements CourseService {
     }
 
     @Override
-    public boolean checkExistCourseName(String courseName) {
-        return courseDao.checkExistCourseName(courseName);
+    public boolean checkExistCourseName(String courseName, String excludeId) {
+        return courseDao.checkExistCourseName(courseName, excludeId);
     }
 
     @Override
@@ -41,6 +41,11 @@ public class CourseServiceImp implements CourseService {
     @Override
     public List<Course> sortCourse(int option) {
         return courseDao.sortCourse(option);
+    }
+
+    @Override
+    public List<Course> findAllOfRole(String role) {
+        return courseDao.findAllOfRole(role);
     }
 
     @Override
