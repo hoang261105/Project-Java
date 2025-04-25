@@ -2,13 +2,11 @@ package ra.edu.utils;
 
 import ra.edu.business.model.Course;
 import ra.edu.business.model.CourseRegistrationInfo;
-import ra.edu.business.model.Enrollment;
 import ra.edu.business.model.Status;
 import ra.edu.presentation.CourseUI;
 import ra.edu.presentation.EnrollmentUI;
 import ra.edu.validate.Validator;
 
-import java.security.PublicKey;
 import java.util.List;
 import java.util.Scanner;
 

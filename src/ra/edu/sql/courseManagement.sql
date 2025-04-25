@@ -441,7 +441,7 @@ create procedure check_enrollment_exist(
 begin
     select count(*) > 0 as enrollment_exist
     from enrollments
-    where student_id = stu_id_in and course_id = course_id_in and status = 'WAITING';
+    where student_id = stu_id_in and course_id = course_id_in and status in ('WAITING', 'CONFIRMED');
 end;
 
 -- 3. Xem khóa học đã đăng ký
@@ -452,7 +452,8 @@ begin
     select c.course_id, c.name, c.instructor, c.duration, e.registered_at, e.status
     from courses c
     join enrollments e on c.course_id = e.course_id
-    where e.student_id = stu_id_in;
+    where e.student_id = stu_id_in
+    order by e.registered_at desc;
 end;
 
 -- 4. Hủy đăng ký
@@ -509,7 +510,7 @@ begin
     join students s ON e.student_id = s.student_id
     join courses c ON e.course_id = c.course_id
     where c.course_id = course_id_in
-    order by c.course_id, e.registered_at;
+    order by s.name;
 end;
 
 -- 2. Duyệt sinh viên đăng ký khóa học
@@ -559,7 +560,7 @@ begin
     left join enrollments e on c.course_id = e.course_id
     left join students s on s.student_id = e.student_id
     group by c.name
-    order by count_student desc;
+    order by count_student desc, c.name;
 end;
 
 -- 3. Thống kê top 5 khóa học đông sinh viên nhất

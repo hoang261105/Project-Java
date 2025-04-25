@@ -80,7 +80,7 @@ public class EnrolledCourses {
                         status == Status.CANCELLED ? "Đã hủy" : "Từ chối";
 
         // In ra bảng với nền Cornflower Blue
-        System.out.printf(cornflowerBlueText + "| %-15s | %-24s | %-15s | %-24s | %-20s | %-20s |" + reset + "\n",
+        System.out.printf(cornflowerBlueText + "| %-15s | %-40s | %-15s | %-24s | %-20s | %-20s |" + reset + "\n",
                 courseId, courseName, duration, instructor, registeredAt, displayStatus);
     }
 }

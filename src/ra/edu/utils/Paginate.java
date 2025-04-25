@@ -39,7 +39,6 @@ public class Paginate {
                 continue;
             }
 
-<<<<<<< HEAD
             int fromIndex = (curPage - 1) * COURSES_PER_PAGE;
             int toIndex = Math.min(fromIndex + COURSES_PER_PAGE, courseList.size());
             List<Course> paginatedList = courseList.subList(fromIndex, toIndex);
@@ -126,16 +125,6 @@ public class Paginate {
             paginatedList.forEach(courseRegistrationInfo -> {
                 courseRegistrationInfo.displayData();
                 System.out.println(cornflowerBlueText + "+-----------------+--------------------------------+--------------+--------------------------------+----------------------+----------------------+" + reset);
-=======
-            int fromIndex = (curPage - 1) * ITEMS_PER_PAGE;
-            int toIndex = Math.min(fromIndex + ITEMS_PER_PAGE, courseList.size());
-            List<Course> paginatedList = courseList.subList(fromIndex, toIndex);
-
-            TableUtils.printHeaderTableCourse();
-            paginatedList.forEach(course -> {
-                course.displayData();
-                System.out.println("+------------+--------------------------------+------------+-----------------+------------+");
->>>>>>> ad3dc209e8ab82a2dfcde556e1087fd1115debd2
             });
         } while (true);
     }

@@ -77,7 +77,14 @@ public class Validator {
         do {
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                return LocalDate.parse(sc.nextLine(), formatter);
+                LocalDate dob = LocalDate.parse(sc.nextLine(), formatter);
+
+                if (dob.isAfter(LocalDate.now())) {
+                    System.err.println("Ngày sinh không thể lớn hơn ngày hiện tại");
+                    continue;
+                }
+
+                return dob;
             } catch (Exception e) {
                 e.fillInStackTrace();
             }

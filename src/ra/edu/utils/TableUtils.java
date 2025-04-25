@@ -38,10 +38,10 @@ public class TableUtils {
         String cornflowerBlueText = "\u001B[38;5;33m";  // Mã màu ANSI cho chữ Cornflower Blue
         String reset = "\u001B[0m";  // Mã reset màu
 
-        String border = "+-----------------+--------------------------+-----------------+--------------------------+----------------------+----------------------+";
+        String border = "+-----------------+------------------------------------------+-----------------+--------------------------+----------------------+----------------------+";
 
         System.out.println(cornflowerBlueText + border + reset);
-        System.out.printf(cornflowerBlueText + "| %-15s | %-24s | %-15s | %-24s | %-20s | %-20s |" + reset + "\n",
+        System.out.printf(cornflowerBlueText + "| %-15s | %-40s | %-15s | %-24s | %-20s | %-20s |" + reset + "\n",
                 "Mã khóa học", "Tên khóa học", "Thời lượng (h)", "Giảng viên", "Ngày đăng ký", "Trạng thái");
         System.out.println(cornflowerBlueText + border + reset);
     }
